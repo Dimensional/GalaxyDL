@@ -1,0 +1,44 @@
+name: Build binaries
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, ubuntu-24.04-arm, macos-13, macos-15, windows-2025]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.9"
+
+      - name: Install pyinstaller and dependencies
+        run: pip3 install --upgrade pyinstaller requests
+
+      - name: Set strip on Linux and Mac
+        id: strip
+        run: echo "option=--strip" >> $GITHUB_OUTPUT
+        if: runner.os != 'Windows'
+
+      - name: Build
+        run: pyinstaller
+          --onefile
+          --name gogdl
+          ${{ steps.strip.outputs.option }}
+          gogdl/cli.py
+        env:
+          PYTHONOPTIMIZE: 1
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: gogdl-${{ matrix.os }}
+          path: dist/*
