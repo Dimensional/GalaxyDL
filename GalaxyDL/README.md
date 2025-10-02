@@ -95,7 +95,7 @@ dotnet run -- archive stats --archive-root ./archive
 
 You can find GOG Game IDs by:
 
-1. **GOG Store URL**: The ID is in the URL: `https://www.gog.com/game/[game_name]_[GAME_ID]`
+1. **GOG Store URL**: The ID is in the URL: `https://www.gog.com/game/[game_name]`
 2. **GOG Galaxy**: Inspect network requests in browser developer tools
 3. **Common Examples**:
    - The Witcher 2: `1207658930`
@@ -126,12 +126,12 @@ The `auth.json` file stores your GOG credentials securely:
 
 ```json
 {
-  "46899977096215655": {
+  "12345678901234567890": {
     "access_token": "...",
     "refresh_token": "...",
     "expires_in": 3600,
     "token_type": "bearer",
-    "scope": "user.profile user.library",
+    "scope": "",
     "login_time": 1640995200
   }
 }
